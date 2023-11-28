@@ -1,0 +1,28 @@
+wc.lpfnWndProc = DefWindowProc;
+wc.hInstance = hinstance; //Aktuelle Instanz des Programms
+wc.lpszClassName = "WindowClass"; //Name der Fensterklasse
+
+
+/*
+	wc.hIcon = LoadIcon(NULL, IDI_ASTERISK); //Anwendungssymbol
+
+	IDI_ASTERISK,
+	IDI_ERROR,
+	IDI_EXCLAMATION,
+	IDI_HAND,
+	IDI_INFORMATION,
+	IDI_QUESTION,
+	IDI_SHIELD,
+	IDI_WARNING,
+	IDI_WINLOGO
+*/
+
+/*
+	wc.style = CS_OWNDC | CS_VREDRAW | CS_HREDRAW;
+
+	CS_OWNDC: Jedes Fenster in der Klasse erhält seinen eigenen Gerätekontext.
+	CS_VREDRAW: Das Fenster wird neu gezeichnet, wenn sich seine Höhe ändert.
+	CS_HREDRAW: Das Fenster wird neu gezeichnet, wenn sich seine Breite ändert.
+*/
+
+wc.hbrBackground = (HBRUSH)(COLOR_WINDOW + 3); //Hintergrund farbe des Fensters (1 = Weiß, 2 = Grau, 3 = Schwarz)
