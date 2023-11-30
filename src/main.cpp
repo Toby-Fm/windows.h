@@ -1,51 +1,28 @@
-#include <iostream>
-#include <tchar.h>
-#include <Windows.h>
+#include "include/main.hpp"
 
-LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lparam) {
-	switch (uMsg) {
-		case WM_PAINT: {
-			PAINTSTRUCT ps;
-			HDC hdc = BeginPaint(hwnd, &ps);
-			//ALl painting occur here, between BeginPaint and Endpaint.
-			FillRect(hdc, &ps.rcPaint, (HBRUSH) (COLOR_WINDOW+1));
-			EndPaint(hwnd,&ps);
-		}
-		case WM_CLOSE: {
-			DestroyWindow(hwnd);
-			break;
-		}
-		case WM_DESTROY: {
-			PostQuitMessage(0);
-			break;
-		}
-		return 0;
-	}
-	return DefWindowProc(hwnd, uMsg, wParam, lparam);
-}
-
-int WINAPI WinMain(HINSTANCE hinstance, HINSTANCE hPrevInstance, LPSTR pCmdline, int nCmdShow) {	
+int WINAPI WinMain(HINSTANCE hinstance, HINSTANCE hPrevInstance, LPSTR pCmdline, int nCmdShow) {
+	HWND hwnd;
 	//RegisterClass
-	const wchar_t WindowClass[] = L"WindowFensterKlasse";
+	const wchar_t winClass[] = L"WindowClass";
 	
-	WNDCLASS wc = { };
-
+	WNDCLASS wc;
 	wc.lpfnWndProc		= DefWindowProc;
-	wc.hInstance 		= hinstance; 					//Aktuelle Instanz des Programms
-	wc.lpszClassName 	= "WindowClass"; 				//Name der Fensterklasse
-	wc.hIcon 			= LoadIcon(NULL, IDI_ERROR); 	//Anwendungssymbol
-	wc.style 			= CS_VREDRAW | CS_HREDRAW; 		//Fensterstyle Definition
-	wc.hbrBackground 	= (HBRUSH)(COLOR_WINDOW + 3); 	//Hintergrund farbe des Fensters (1 = Weiß, 2 = Grau, 3 = Schwarz)
-	wc.cbWndExtra		= 0; 							//Keine zusätlichen Klasseninformationen
-	wc.cbClsExtra		= 0; 							//Keine zusätlichen Fentserinformationen
-	
+	wc.hInstance		= hinstance;					//Aktuelle Instanz des Programms
+	wc.lpszClassName	= "winClass";					//Name der Fensterklasse
+	wc.style			= CS_VREDRAW | CS_HREDRAW;		//Fensterstyle Definition
+	wc.hbrBackground	= (HBRUSH)(COLOR_WINDOW + 2);	//Hintergrund farbe des Fensters (1 = Weiß, 2 = Grau, 3 = Schwarz)
+	wc.hIcon			= LoadIcon(NULL, IDI_ERROR);	//Anwendungssymbol
+	wc.hCursor			= LoadCursor(NULL, IDC_ARROW);	//Mauszeigersymbol
+	wc.cbWndExtra		= 0;							//Keine zusätlichen Klasseninformationen
+	wc.cbClsExtra		= 0;							//Keine zusätlichen Fentserinformationen
+
 	RegisterClass(&wc);
 
 	//Erstellen des Hauptfensters
-	HWND hwnd = CreateWindowExW(
+	hwnd = CreateWindowExW(
 		0,
-		L"WindowClass", //Name der Klasse
-		L"Titel",  //Titel des Fensters
+		L"winClass", //Name der Klasse
+		L"Haupt Fenster",  //Titel des Fensters
 		WS_OVERLAPPEDWINDOW, //Stil
 		//Größe und Position
 		CW_USEDEFAULT,
@@ -57,15 +34,22 @@ int WINAPI WinMain(HINSTANCE hinstance, HINSTANCE hPrevInstance, LPSTR pCmdline,
 		hinstance, //Application Instance
 		NULL //Extra Data
 	);
-	if (hwnd == NULL) {
+	if (hwnd == NULL) { //Wenn das Erstellen des Hauptfensters fehlschlägt, wird eine Fehlermeldung angezeigt
+		MessageBoxW(NULL, L"Fehler beim Registrieren der Fensterklasse", L"Fehler", MB_OK);
 		return 0;
 	}
 
+	//Button erzeugen
+	HWND button = ButtonCreator::Create(L"Button", 500, 500, 150, 70, true, hwnd, hinstance);
+	if (button == NULL) {//Wenn das Erstellen des Buttons fehlschlägt, wird eine Fehlermeldung angezeigt
+		MessageBoxW(NULL, L"Fehler beim Erstellen des Buttons", L"Fehler", MB_OK);
+		return 0;
+	}
 	//Anzeigen des Hauptfensters
 	ShowWindow(hwnd, nCmdShow);
 
+	MSG msg;
 	//run the message loop
-	MSG msg{ };
 	while (GetMessage(&msg, NULL, 0, 0) > 0) {
 		TranslateMessage(&msg);
 		DispatchMessage(&msg);
