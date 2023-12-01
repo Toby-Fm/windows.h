@@ -58,5 +58,3 @@ BS_NOTIFY			// Sendet Benachrichtigungen an den Eltern-Dialog.
 BS_LEFT				// Der Text wird linksbündig ausgerichtet.
 BS_RIGHT			// Der Text wird rechtsbündig ausgerichtet.
 BS_CENTER			// Der Text wird zentriert ausgerichtet.
-
-
