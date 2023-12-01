@@ -1,0 +1,31 @@
+# Makefile für das Projekt
+
+# Compiler-Einstellungen
+CXX = g++
+CXXFLAGS = -std=c++11 -Wall
+
+# Verzeichnisse
+SRC_DIR = src
+INCLUDE_DIR = $(SRC_DIR)/Include
+
+# Dateien
+SRCS = $(wildcard $(SRC_DIR)/*.cpp)
+OBJS = $(patsubst $(SRC_DIR)/%.cpp, %.o, $(SRCS))
+
+# Ziel-Datei
+TARGET = main
+
+# Regel zum Erstellen des Ziels
+$(TARGET): $(OBJS)
+	$(CXX) $(CXXFLAGS) -I$(INCLUDE_DIR) $^ -o $@
+
+# Regel zum Kompilieren von .cpp-Dateien in .o-Dateien
+%.o: $(SRC_DIR)/%.cpp
+	$(CXX) $(CXXFLAGS) -I$(INCLUDE_DIR) -c $< -o $@
+
+# Regel zum Löschen der erzeugten Dateien
+clean:
+	rm -f $(OBJS) $(TARGET)
+
+# Phony-Ziel für 'clean', um Konflikte mit Dateinamen zu vermeiden
+.PHONY: clean
