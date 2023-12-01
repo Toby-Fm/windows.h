@@ -26,3 +26,37 @@ wc.lpszClassName = "WindowClass"; //Name der Fensterklasse
 */
 
 wc.hbrBackground = (HBRUSH)(COLOR_WINDOW + 3); //Hintergrund farbe des Fensters (1 = Weiß, 2 = Grau, 3 = Schwarz)
+
+
+// Button-Stile
+WS_TABSTOP			// Legt fest, dass der Button durch die Tab-Taste fokussierbar ist.
+WS_VISIBLE			// Macht den Button sichtbar.
+WS_CHILD			// Gibt an, dass der Button ein untergeordnetes Fenster-Element ist.
+BS_DEFPUSHBUTTON	// Setzt den Button als Standard-Druckknopf, der auf "Enter" reagiert.
+BS_FLAT				// Verleiht dem Button ein flaches Aussehen, ohne erhabene Ränder.
+BS_RADIOBUTTON		// Erstellt einen Optionsknopf (Radio Button), der in einer Gruppe von Optionsknöpfen ausgewählt werden kann.
+BS_AUTOCHECKBOX		// Erstellt ein automatisches Kontrollkästchen, das seinen Zustand automatisch ändert, wenn darauf geklickt wird.
+BS_GROUPBOX			// Erstellt einen Rahmen für die Gruppierung von Controls.
+BS_AUTORADIOBUTTON	// Erstellt einen automatischen Optionsknopf (Radio Button), der in einer Gruppe von automatischen Optionsknöpfen ausgewählt werden kann.
+BS_3STATE			// Erstellt eine Schaltfläche mit drei Zuständen (ausgewählt, nicht ausgewählt, unbestimmt).
+BS_AUTO3STATE		// Erstellt eine automatische Schaltfläche mit drei Zuständen.
+BS_PUSHBUTTON		// Standard-Druckknopf.
+BS_CHECKBOX			// Erstellt ein Kontrollkästchen.
+BS_USERBUTTON		// Erstellt einen benutzerdefinierten Button.
+BS_SPLITBUTTON		// Erstellt einen geteilten Button (Teil Druckknopf, Teil Dropdown-Pfeil).
+BS_ICON				// Erstellt einen Button mit einem Icon.
+BS_BITMAP			// Erstellt einen Button mit einem Bitmap.
+BS_LEFTTEXT			// Legt den Text auf der linken Seite des Buttons fest.
+BS_RIGHTBUTTON		// Der Text wird auf der rechten Seite des Buttons angezeigt.
+BS_TEXT				// Der Button enthält einen Text.
+BS_TOP				// Der Text wird oben im Button zentriert.
+BS_BOTTOM			// Der Text wird unten im Button zentriert.
+BS_VCENTER			// Der Text wird vertikal zentriert.
+BS_PUSHLIKE			// Der Button hat das Erscheinungsbild eines heruntergedrückten Buttons.
+BS_MULTILINE		// Der Text kann mehrere Zeilen umfassen.
+BS_NOTIFY			// Sendet Benachrichtigungen an den Eltern-Dialog.
+BS_LEFT				// Der Text wird linksbündig ausgerichtet.
+BS_RIGHT			// Der Text wird rechtsbündig ausgerichtet.
+BS_CENTER			// Der Text wird zentriert ausgerichtet.
+
+
