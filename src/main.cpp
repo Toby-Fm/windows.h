@@ -1,15 +1,14 @@
 #include "include/main.hpp"
 
+HWND g_Button = NULL;
+
 // Die Hauptfunktion des Programms
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lCmdLine, int nCmdShow) {
 	WNDCLASSEX wc;
 	HWND hwnd;
-	MSG msg;
 
-	//Definieren des Fensterklassennamens
-	//const wchar_t g_szClassName[] = L"myWindowClass";
-	const wchar_t winClass[] = L"WindowClass";
-
+	//const wchar_t winClass[] = L"WindowClass";
+	
 	//Initialisieren der Fensterklassenstruktur
 	wc.cbSize = sizeof(WNDCLASSEX); // Größe der Struktur setzen
 	wc.lpfnWndProc		= WndProc;
@@ -19,11 +18,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lCmdLine,
 	wc.hbrBackground	= (HBRUSH)(COLOR_WINDOW + 2);	//Hintergrund farbe des Fensters (1 = Weiß, 2 = Grau, 3 = Schwarz)
 	wc.hIcon			= LoadIcon(NULL, IDI_ERROR);	//Anwendungssymbol
 	wc.hCursor			= LoadCursor(NULL, IDC_ARROW);	//Mauszeigersymbol
-	wc.hIconSm			= LoadIcon(NULL, IDI_APPLICATION); //Kleines Anwendungssymbol laden
+	wc.hIconSm			= LoadIcon(NULL, IDI_ERROR); 	//Kleines Anwendungssymbol laden
 	wc.cbWndExtra		= 0;							//Keine zusätlichen Klasseninformationen
 	wc.cbClsExtra		= 0;							//Keine zusätlichen Fentserinformationen
 	wc.lpszMenuName		= NULL;							// Kein Menü in der Titelleiste
-
 	// Registrieren der Fensterklasse
 	if (!RegisterClassEx(&wc)) {
 		// Wenn die Registrierung fehlschlägt, wird eine Fehlermeldung angezeigt
@@ -35,7 +33,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lCmdLine,
 	hwnd = CreateWindowExW(
 		0,
 		L"winClass", //Name der Klasse
-		L"Haupt Fenster",  //Titel des Fensters
+		L"Warum ist das auf Chinesisch",  //Titel des Fensters
 		WS_OVERLAPPEDWINDOW, //Stil
 		//Größe und Position
 		CW_USEDEFAULT,
@@ -53,20 +51,22 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lCmdLine,
 		return 0;
 	}
 
-	// Hinzufügen eines Buttons zum Fenster
-	HWND button = ButtonCreator::Create(L"Button", 500, 500, 350, 150, 1, hwnd, hInstance);
-	HWND button2 = ButtonCreator::Create(L"Button2", 500,700, 350, 150, 2, hwnd, hInstance);
-	if (button == NULL) {
+	//Hinzufügen eines Buttons zum Fenster
+	HWND button = ButtonCreator::Create(L"Button1", 0, 0, 150, 70, 1, hwnd, hInstance);
+	HWND button2 = ButtonCreator::Create(L"Button2", 150, 0, 150, 70, 2, hwnd, hInstance);
+	HWND button3 = ButtonCreator::Create(L"Button3", 300, 0, 150, 70, 3, hwnd, hInstance);
+	HWND button4 = ButtonCreator::Create(L"Button4", 450, 0, 150, 70, 4, hwnd, hInstance);
+	if (button == NULL || button2 == NULL || button3 == NULL || button4 == NULL) {
 		// Wenn das Erstellen des Buttons fehlschlägt, wird eine Fehlermeldung angezeigt
-		MessageBoxW(NULL, L"Fehler beim Erstellen des Buttons", L"Fehler", MB_OK);
+		MessageBoxW(NULL, L"Fehler beim Erstellen eines oder mehrerer Buttons", L"Fehler", MB_OK | MB_ICONERROR);
 		return 0;
 	}
-
 	// Anzeigen des Hauptfensters
 	ShowWindow(hwnd, nCmdShow);
 	//UpdateWindow(hwnd);
 
 	// Nachrichtenschleife
+	MSG msg;
 	while (GetMessage(&msg, NULL, 0, 0) > 0) {
 		TranslateMessage(&msg);
 		DispatchMessage(&msg);
