@@ -2,7 +2,7 @@
 
 # Compiler-Einstellungen
 CXX = g++
-CXXFLAGS = -std=c++11 -Wall
+CXXFLAGS = -std=c++23 -Wall
 
 # Verzeichnisse
 SRC_DIR = src
