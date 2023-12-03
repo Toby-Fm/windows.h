@@ -1,15 +1,12 @@
 #include "include/main.hpp"
 
-HWND g_Button = NULL;
-
 // Die Hauptfunktion des Programms
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lCmdLine, int nCmdShow) {
+	MSG msg;
 	WNDCLASSEX wc;
 	HWND hwnd;
 
-	//const wchar_t winClass[] = L"WindowClass";
-	
-	//Initialisieren der Fensterklassenstruktur
+	//HauptFenster
 	wc.cbSize = sizeof(WNDCLASSEX); // Größe der Struktur setzen
 	wc.lpfnWndProc		= WndProc;
 	wc.hInstance		= hInstance;					//Aktuelle Instanz des Programms
@@ -22,6 +19,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lCmdLine,
 	wc.cbWndExtra		= 0;							//Keine zusätlichen Klasseninformationen
 	wc.cbClsExtra		= 0;							//Keine zusätlichen Fentserinformationen
 	wc.lpszMenuName		= NULL;							// Kein Menü in der Titelleiste
+
 	// Registrieren der Fensterklasse
 	if (!RegisterClassEx(&wc)) {
 		// Wenn die Registrierung fehlschlägt, wird eine Fehlermeldung angezeigt
@@ -38,7 +36,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lCmdLine,
 		//Größe und Position
 		CW_USEDEFAULT,
 		CW_USEDEFAULT, 
-		1920, //Breite des Fensters
+		620, //Breite des Fensters
 		1080, //Höhe des Fensters
 		NULL, //Parent Window
 		NULL, //Handle für das Menü
@@ -47,11 +45,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lCmdLine,
 	);
 	if (hwnd == NULL) {
 		// Wenn das Erstellen des Hauptfensters fehlschlägt, wird eine Fehlermeldung angezeigt
-		MessageBoxW(NULL, L"Fehler beim Erstellen des Hauptfensters", L"Fehler", MB_OK);
+		MessageBoxW(NULL, L"Fehler beim Erstellen des Hauptfensters", L"Fehler", MB_OK | MB_ICONERROR);
 		return 0;
 	}
 
-	//Hinzufügen eines Buttons zum Fenster
+	//Hinzufügen von Buttons zum Hauptfenster
 	HWND button = ButtonCreator::Create(L"Button1", 0, 0, 150, 70, 1, hwnd, hInstance);
 	HWND button2 = ButtonCreator::Create(L"Button2", 150, 0, 150, 70, 2, hwnd, hInstance);
 	HWND button3 = ButtonCreator::Create(L"Button3", 300, 0, 150, 70, 3, hwnd, hInstance);
@@ -61,12 +59,20 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lCmdLine,
 		MessageBoxW(NULL, L"Fehler beim Erstellen eines oder mehrerer Buttons", L"Fehler", MB_OK | MB_ICONERROR);
 		return 0;
 	}
+	
+	// Erstellen eines Texteingabefelds
+	HWND TextField = TextFieldCreator::Create(L"Textfield", 0, 70, 600, 70, 3, hwnd, hInstance);
+	//HWND TextField = CreateWindowW(L"EDIT", L"Textfield", WS_CHILD | WS_VISIBLE | WS_BORDER | ES_AUTOHSCROLL | ES_MULTILINE | ES_WANTRETURN, 0, 70, 600, 70, hwnd, NULL, NULL, NULL);
+	if (TextField == NULL) {
+		MessageBoxW(hwnd, L"Fehler beim Erstellen des Texteingabefelds", L"Fehler", MB_OK | MB_ICONERROR);
+		return 0;
+	}
+
 	// Anzeigen des Hauptfensters
 	ShowWindow(hwnd, nCmdShow);
-	//UpdateWindow(hwnd);
+	UpdateWindow(hwnd);
 
 	// Nachrichtenschleife
-	MSG msg;
 	while (GetMessage(&msg, NULL, 0, 0) > 0) {
 		TranslateMessage(&msg);
 		DispatchMessage(&msg);
