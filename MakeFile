@@ -2,30 +2,38 @@
 
 # Compiler-Einstellungen
 CXX = g++
-CXXFLAGS = -std=c++23 -Wall
+CXXFLAGS = -std=c++23 -Wall -MMD -MP
 
 # Verzeichnisse
 SRC_DIR = src
+BUILD_DIR = build
 INCLUDE_DIR = $(SRC_DIR)/Include
 
 # Dateien
 SRCS = $(wildcard $(SRC_DIR)/*.cpp)
-OBJS = $(patsubst $(SRC_DIR)/%.cpp, %.o, $(SRCS))
+OBJS = $(patsubst $(SRC_DIR)/%.cpp, $(BUILD_DIR)/%.o, $(SRCS))
 
 # Ziel-Datei
 TARGET = main
 
 # Regel zum Erstellen des Ziels
 $(TARGET): $(OBJS)
-	$(CXX) $(CXXFLAGS) -I$(INCLUDE_DIR) $^ -o $@
+	$(CXX) $(CXXFLAGS) -I$(INCLUDE_DIR) $^ -o $@ -lgdi32
 
 # Regel zum Kompilieren von .cpp-Dateien in .o-Dateien
-%.o: $(SRC_DIR)/%.cpp
+$(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp | $(BUILD_DIR)
 	$(CXX) $(CXXFLAGS) -I$(INCLUDE_DIR) -c $< -o $@
+
+# Regel zum Erstellen des Verzeichnisses für die Objektdateien
+$(BUILD_DIR):
+	mkdir -p $(BUILD_DIR)
 
 # Regel zum Löschen der erzeugten Dateien
 clean:
-	rm -f $(OBJS) $(TARGET)
+	rm -rf $(BUILD_DIR) $(TARGET)
 
 # Phony-Ziel für 'clean', um Konflikte mit Dateinamen zu vermeiden
 .PHONY: clean
+
+# Include-Abhängigkeiten automatisch generieren
+-include $(OBJS:.o=.d)
