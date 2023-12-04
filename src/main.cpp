@@ -1,5 +1,58 @@
 #include "include/main.hpp"
 
+WPARAM wParam; 
+LPARAM lPara;
+
+// Die Window Procedure-Funktion, die Nachrichten für unser Fenster verarbeitet
+LRESULT CALLBACK WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
+	switch (uMsg) {
+		case WM_CLOSE: {
+			PostQuitMessage(0); //Sendet eine "Beenden-Nachricht" an die schleife
+			break;
+		}
+		case WM_DESTROY: {
+			DestroyWindow(hwnd); //Zerstört das Fenster
+			break;
+		}
+		case WM_COMMAND: {
+			int buttonID = LOWORD(wParam);
+			switch(buttonID) {
+				case (1 + BUTTON_ID_OFFSET): {
+					MessageBeep(MB_DEFBUTTON1);
+					MessageBoxW(hwnd, L"der Button 1 wurde geklickt!", L"Button-Klick", MB_OK);
+					break;
+				}
+				case (2 + BUTTON_ID_OFFSET): {
+					MessageBeep(MB_ICONERROR);
+					MessageBoxW(hwnd, L"der Button 2 wurde geklickt!", L"Button-Klick", MB_OK);
+					break;
+				}
+				case (3 + BUTTON_ID_OFFSET): {
+					MessageBeep(MB_ERR_INVALID_CHARS);
+					MessageBoxW(hwnd, L"der Button 3 wurde geklickt!", L"Button-Klick", MB_OK);
+					break;
+				}
+				case (4 + BUTTON_ID_OFFSET): {
+					MessageBeep(MB_ICONASTERISK);
+					MessageBoxW(hwnd, L"der Button 4 wurde geklickt!", L"Button-Klick", MB_OK);
+					break;
+				}
+			}
+			break;
+		}
+		case WM_CREATE: {
+			break;
+		}
+		case WM_CHAR: {
+			break;
+		}
+		default: {
+			return DefWindowProcW(hwnd, uMsg, wParam, lParam);
+		}
+	}
+	return 0;
+}
+
 // Die Hauptfunktion des Programms
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lCmdLine, int nCmdShow) {
 	MSG msg;
@@ -61,11 +114,13 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lCmdLine,
 	}
 	
 	// Erstellen eines Texteingabefelds
-	HWND TextField = TextFieldCreator::Create(L"Textfield", 0, 70, 600, 70, 3, hwnd, hInstance);
-	//HWND TextField = CreateWindowW(L"EDIT", L"Textfield", WS_CHILD | WS_VISIBLE | WS_BORDER | ES_AUTOHSCROLL | ES_MULTILINE | ES_WANTRETURN, 0, 70, 600, 70, hwnd, NULL, NULL, NULL);
+	HWND TextField = TextFieldCreator::Create(L"", 0, 70, 600, 100, 3, hwnd, hInstance);
 	if (TextField == NULL) {
 		MessageBoxW(hwnd, L"Fehler beim Erstellen des Texteingabefelds", L"Fehler", MB_OK | MB_ICONERROR);
 		return 0;
+	}
+	if(wParam == '\r' || wParam == '\n') {
+		SendMessage(TextField, EM_LINESCROLL, 0, INT_MAX);
 	}
 
 	// Anzeigen des Hauptfensters
